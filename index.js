@@ -33,4 +33,20 @@ app.post("/tasks", async (req, res) => {
     }
 });
 
+app.delete("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+
+        const deletedTask = await TaskModel.findByIdAndDelete(taskId);
+
+        if (!deletedTask) {
+            return res.status(404).send("Tarefa não encontrada");
+        }
+
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 app.listen(port, () => console.log(`🔥 Servidor rodando na porta ${port}`));
