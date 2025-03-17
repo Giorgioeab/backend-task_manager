@@ -13,4 +13,5 @@ const TaskSchema = new Schema({
 });
 
 const TaskModel = model("Task", TaskSchema);
+
 module.exports = TaskModel;
