@@ -48,6 +48,33 @@ app.post("/tasks", async (req, res) => {
     }
 });
 
+app.patch("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const taskData = req.body;
+
+        const taskToUpdate = await TaskModel.findById(taskId);
+
+        const allowedUpdates = ["isCompleted"];
+        const requestedUpdates = Object.keys(taskData);
+
+        for (update of requestedUpdates) {
+            if (allowedUpdates.includes(update)) {
+                taskToUpdate[update] = taskData[update];
+            } else {
+                return res
+                    .status(500)
+                    .send("A atualização de algum campo não é permitida");
+            }
+        }
+
+        await taskToUpdate.save();
+        return res.status(200).send(taskToUpdate);
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+});
+
 app.delete("/tasks/:id", async (req, res) => {
     try {
         const taskId = req.params.id;
