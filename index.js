@@ -6,7 +6,7 @@ const connectToDatabase = require("./src/database/mongoose.database");
 
 dotenv.config();
 
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8000;
 const app = express();
 app.use(express.json());
 
