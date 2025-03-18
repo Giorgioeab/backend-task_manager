@@ -41,6 +41,33 @@ class TaskController {
             this.res.status(500).send(error.message);
         }
     }
+
+    async updateTask() {
+        try {
+            const taskId = this.req.params.id;
+            const taskData = this.req.body;
+
+            const taskToUpdate = await TaskModel.findById(taskId);
+
+            const allowedUpdates = ["isCompleted"];
+            const requestedUpdates = Object.keys(taskData);
+
+            for (let update of requestedUpdates) {
+                if (allowedUpdates.includes(update)) {
+                    taskToUpdate[update] = taskData[update];
+                } else {
+                    return this.res
+                        .status(500)
+                        .send("A atualização de algum campo não é permitida");
+                }
+            }
+
+            await taskToUpdate.save();
+            return this.res.status(200).send(taskToUpdate);
+        } catch (error) {
+            return this.res.status(500).send(error.message);
+        }
+    }
 }
 
 module.exports = TaskController;
