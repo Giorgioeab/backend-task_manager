@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -16,5 +16,5 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.14.15 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "YOUR APP's NAME" #Must be unique in Heroku
-          heroku_email: "YOUR EMAIL"
+          heroku_app_name: "almeida-task-manager" #Must be unique in Heroku
+          heroku_email: "giorgioeabarbosa@gmail.com"
