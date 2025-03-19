@@ -13,10 +13,9 @@ class TaskController {
         this.res = res;
     }
 
-    async get() {
+    async getAll() {
         try {
             const tasks = await TaskModel.find({});
-
             this.res.status(200).send(tasks);
         } catch (error) {
             this.res.status(500).send(error.message);
@@ -26,7 +25,6 @@ class TaskController {
     async getById() {
         try {
             const taskId = this.req.params.id;
-
             const task = await TaskModel.findById(taskId);
 
             if (!task) {
@@ -38,7 +36,8 @@ class TaskController {
             if (error instanceof mongoose.Error.CastError) {
                 return objectIdCastError(this.res);
             }
-            res.status(500).send(error.message);
+
+            return this.res.status(500).send(error.message);
         }
     }
 
@@ -67,7 +66,7 @@ class TaskController {
             const allowedUpdates = ["isCompleted"];
             const requestedUpdates = Object.keys(taskData);
 
-            for (let update of requestedUpdates) {
+            for (const update of requestedUpdates) {
                 if (allowedUpdates.includes(update)) {
                     taskToUpdate[update] = taskData[update];
                 } else {
@@ -89,6 +88,12 @@ class TaskController {
     async delete() {
         try {
             const taskId = this.req.params.id;
+
+            const taskToDelete = await TaskModel.findById(taskId);
+
+            if (!taskToDelete) {
+                return notFoundError(this.res);
+            }
 
             const deletedTask = await TaskModel.findByIdAndDelete(taskId);
 
