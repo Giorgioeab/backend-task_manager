@@ -4,7 +4,8 @@ const connectToDataBase = async () => {
     try {
         await mongoose
             .connect(
-                `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@taskmanagercluster.e0qct.mongodb.net/myFirstMongoDB?retryWrites=true&w=majority&appName=TaskManagerCluster`
+                `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@taskmanagercluster.e0qct.mongodb.net/myFirstMongoDB?retryWrites=true&w=majority&appName=TaskManagerCluster`,
+                { bufferCommands: false }
             )
             .then(console.log("MongoDB conectando..."));
         console.log("🔥 MongoDB conectado com sucesso!");
